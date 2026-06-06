@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Witness — Brand Book A4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  @page { size: A4; margin: 0; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0A0A0F;
+    --surface:   #111118;
+    --elevated:  #1A1A24;
+    --border:    #2A2A3A;
+    --primary:   #C8FF00;
+    --primary-m: #1E2600;
+    --calories:  #FF5C38;
+    --cal-m:     #2A1208;
+    --protein:   #00D4FF;
+    --prot-m:    #001E26;
+    --workout:   #A259FF;
+    --work-m:    #160D26;
+    --weight:    #FFB020;
+    --wgt-m:     #261A04;
+    --text:      #F0F0FF;
+    --text2:     #8888AA;
+    --muted:     #44445A;
+    --font-d: 'Space Grotesk', sans-serif;
+    --font-b: 'Inter', sans-serif;
+    --font-m: 'JetBrains Mono', monospace;
+  }
+
+  body {
+    background: #666;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    width: 210mm;
+    height: 297mm;
+    background: var(--bg);
+    padding: 14mm 14mm 12mm;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Background accent */
+  .page::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(200,255,0,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ── HEAD ── */
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10mm;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 8mm;
+  }
+
+  .lockup {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .mark {
+    width: 40px; height: 40px;
+    background: var(--primary);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .brand-name {
+    font-family: var(--font-d);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text);
+  }
+
+  .brand-name em { color: var(--primary); font-style: normal; }
+
+  .head-right {
+    text-align: right;
+  }
+
+  .version {
+    font-family: var(--font-m);
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .tagline {
+    font-family: var(--font-d);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text2);
+    margin-top: 3px;
+    font-style: italic;
+  }
+
+  /* ── COLORS ── */
+  .section-label {
+    font-family: var(--font-m);
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 5mm;
+  }
+
+  .color-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 8mm;
+  }
+
+  .color-tile {
+    flex: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .color-swatch { height: 24mm; }
+
+  .color-info {
+    padding: 6px 8px;
+    background: var(--surface);
+  }
+
+  .color-name {
+    font-family: var(--font-d);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 1px;
+  }
+
+  .color-hex {
+    font-family: var(--font-m);
+    font-size: 8px;
+    color: var(--text2);
+  }
+
+  .color-role {
+    font-size: 8px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ── MIDDLE TWO-COL ── */
+  .mid-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 8mm;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+  }
+
+  .card-title {
+    font-family: var(--font-d);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .type-row {
+    margin-bottom: 5px;
+  }
+
+  .type-row .sample {
+    display: block;
+    color: var(--text);
+  }
+
+  .type-meta {
+    font-family: var(--font-m);
+    font-size: 7.5px;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+
+  .principle-item {
+    margin-bottom: 6px;
+    display: flex;
+    gap: 6px;
+  }
+
+  .principle-dot {
+    width: 3px;
+    background: var(--primary);
+    border-radius: 2px;
+    flex-shrink: 0;
+    align-self: stretch;
+    min-height: 12px;
+  }
+
+  .principle-text strong {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text);
+    display: block;
+    margin-bottom: 1px;
+  }
+
+  .principle-text span {
+    font-size: 8px;
+    color: var(--text2);
+    line-height: 1.4;
+  }
+
+  /* ── STATS ROW ── */
+  .stats-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 8mm;
+  }
+
+  .stat-tile {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-tile::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .stat-tile.a::before { background: var(--calories); }
+  .stat-tile.b::before { background: var(--protein); }
+  .stat-tile.c::before { background: var(--workout); }
+  .stat-tile.d::before { background: var(--weight); }
+  .stat-tile.e::before { background: var(--primary); }
+
+  .stat-icon { font-size: 14px; margin-bottom: 4px; }
+
+  .stat-val {
+    font-family: var(--font-d);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  .stat-tile.a .stat-val { color: var(--calories); }
+  .stat-tile.b .stat-val { color: var(--protein); }
+  .stat-tile.c .stat-val { color: var(--workout); }
+  .stat-tile.d .stat-val { color: var(--weight); }
+  .stat-tile.e .stat-val { color: var(--primary); }
+
+  .stat-lbl {
+    font-size: 8px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  /* ── WORDMARKS ── */
+  .wm-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 8mm;
+  }
+
+  .wm-tile {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    height: 22mm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .wm-tile.dark-bg { background: var(--bg); }
+
+  .wm-a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .wm-a-mark {
+    width: 28px; height: 28px;
+    background: var(--primary);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .wm-a-text {
+    font-family: var(--font-d);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .wm-b {
+    font-family: var(--font-d);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  .wm-b .hv { color: var(--text); }
+  .wm-b .lt { color: var(--muted); font-weight: 300; }
+
+  .wm-c {
+    font-family: var(--font-d);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .wm-c .ac { color: var(--primary); }
+  .wm-c .nm { color: var(--text); }
+
+  /* ── FOOTER ── */
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 6mm;
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+  }
+
+  .foot-l {
+    font-family: var(--font-m);
+    font-size: 7.5px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .foot-r {
+    font-size: 8px;
+    color: var(--muted);
+    text-align: right;
+    line-height: 1.7;
+  }
+
+  @media print {
+    body { background: none; padding: 0; }
+    .page { margin: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEAD -->
+  <div class="head">
+    <div class="lockup">
+      <div class="mark">
+        <svg width="22" height="22" viewBox="0 0 26 26" fill="none">
+          <path d="M4 13h4l3-8 4 16 3-8h4" stroke="#0A0A0F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="brand-name">WIT<em>NESS</em></div>
+    </div>
+    <div class="head-right">
+      <div class="version">BRAND BOOK v1.0 · 2026-06-06</div>
+      <div class="tagline">"Every rep. Every meal. Witnessed."</div>
+    </div>
+  </div>
+
+  <!-- COLORS -->
+  <div class="section-label">Color Hierarchy</div>
+  <div class="color-row">
+    <div class="color-tile">
+      <div class="color-swatch" style="background:#C8FF00;box-shadow:0 0 20px rgba(200,255,0,0.3);"></div>
+      <div class="color-info">
+        <div class="color-name">Electric Lime</div>
+        <div class="color-hex">#C8FF00</div>
+        <div class="color-role">Primary — CTAs, progress</div>
+      </div>
+    </div>
+    <div class="color-tile">
+      <div class="color-swatch" style="background:#FF5C38;"></div>
+      <div class="color-info">
+        <div class="color-name">Coral</div>
+        <div class="color-hex">#FF5C38</div>
+        <div class="color-role">Calories — food module</div>
+      </div>
+    </div>
+    <div class="color-tile">
+      <div class="color-swatch" style="background:#00D4FF;"></div>
+      <div class="color-info">
+        <div class="color-name">Cyan</div>
+        <div class="color-hex">#00D4FF</div>
+        <div class="color-role">Protein — muscle data</div>
+      </div>
+    </div>
+    <div class="color-tile">
+      <div class="color-swatch" style="background:#A259FF;"></div>
+      <div class="color-info">
+        <div class="color-name">Violet</div>
+        <div class="color-hex">#A259FF</div>
+        <div class="color-role">Workouts — sets, reps</div>
+      </div>
+    </div>
+    <div class="color-tile">
+      <div class="color-swatch" style="background:#FFB020;"></div>
+      <div class="color-info">
+        <div class="color-name">Amber</div>
+        <div class="color-hex">#FFB020</div>
+        <div class="color-role">Weight — BMI tracker</div>
+      </div>
+    </div>
+    <div class="color-tile">
+      <div class="color-swatch" style="background:#111118;border-bottom:1px solid #2A2A3A;"></div>
+      <div class="color-info">
+        <div class="color-name">Base Surface</div>
+        <div class="color-hex">#0A0A0F / #111118</div>
+        <div class="color-role">Dark-first backgrounds</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MID: TYPOGRAPHY + PRINCIPLES -->
+  <div class="mid-cols">
+    <div class="card">
+      <div class="card-title">Typography</div>
+      <div class="type-row">
+        <div class="type-meta">Display — Space Grotesk 800</div>
+        <span class="sample" style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:18px;letter-spacing:-0.03em;">Track Every Rep.</span>
+      </div>
+      <div class="type-row">
+        <div class="type-meta">Heading — Space Grotesk 700</div>
+        <span class="sample" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;letter-spacing:-0.02em;">Chest &amp; Shoulders</span>
+      </div>
+      <div class="type-row">
+        <div class="type-meta">Body — Inter 400</div>
+        <span class="sample" style="font-family:'Inter',sans-serif;font-weight:400;font-size:11px;color:#8888AA;">Log meals and workouts daily to track progress.</span>
+      </div>
+      <div class="type-row">
+        <div class="type-meta">Mono — JetBrains Mono 500</div>
+        <span class="sample" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#C8FF00;">2,340 kcal · 187g protein</span>
+      </div>
+      <div class="type-row">
+        <div class="type-meta">Stat — Space Grotesk 900</div>
+        <span class="sample" style="font-family:'Space Grotesk',sans-serif;font-weight:900;font-size:28px;letter-spacing:-0.04em;color:#FF5C38;">2,340</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Principles</div>
+      <div class="principle-item">
+        <div class="principle-dot"></div>
+        <div class="principle-text">
+          <strong>Witness, don't prescribe</strong>
+          <span>Records reality — no guilt, no pressure. Data without judgment.</span>
+        </div>
+      </div>
+      <div class="principle-item">
+        <div class="principle-dot"></div>
+        <div class="principle-text">
+          <strong>Data at a glance</strong>
+          <span>Numbers are large and chromatic. Scannable in under a second.</span>
+        </div>
+      </div>
+      <div class="principle-item">
+        <div class="principle-dot"></div>
+        <div class="principle-text">
+          <strong>Friction-free logging</strong>
+          <span>Every entry takes under 15 seconds. Search-to-fill, smart defaults.</span>
+        </div>
+      </div>
+      <div class="principle-item">
+        <div class="principle-dot"></div>
+        <div class="principle-text">
+          <strong>Dark-first, focus-first</strong>
+          <span>Dark surfaces. Accent colors carry all semantic meaning.</span>
+        </div>
+      </div>
+      <div class="principle-item">
+        <div class="principle-dot"></div>
+        <div class="principle-text">
+          <strong>Optional is truly optional</strong>
+          <span>Photos and weight never block the core logging flow.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS ROW -->
+  <div class="section-label">Daily Stat Modules</div>
+  <div class="stats-row">
+    <div class="stat-tile a">
+      <div class="stat-icon">🔥</div>
+      <div class="stat-val">2,340</div>
+      <div class="stat-lbl">Calories</div>
+    </div>
+    <div class="stat-tile b">
+      <div class="stat-icon">💪</div>
+      <div class="stat-val">187g</div>
+      <div class="stat-lbl">Protein</div>
+    </div>
+    <div class="stat-tile c">
+      <div class="stat-icon">🏋️</div>
+      <div class="stat-val">16 sets</div>
+      <div class="stat-lbl">Workout</div>
+    </div>
+    <div class="stat-tile d">
+      <div class="stat-icon">⚖️</div>
+      <div class="stat-val">82.4kg</div>
+      <div class="stat-lbl">Weight</div>
+    </div>
+    <div class="stat-tile e">
+      <div class="stat-icon">🔥</div>
+      <div class="stat-val">12d</div>
+      <div class="stat-lbl">Streak</div>
+    </div>
+  </div>
+
+  <!-- WORDMARKS -->
+  <div class="section-label">Wordmarks · Lockups</div>
+  <div class="wm-row">
+    <div class="wm-tile">
+      <div class="wm-a">
+        <div class="wm-a-mark">
+          <svg width="16" height="16" viewBox="0 0 26 26" fill="none">
+            <path d="M4 13h4l3-8 4 16 3-8h4" stroke="#0A0A0F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="wm-a-text">Witness</div>
+      </div>
+    </div>
+    <div class="wm-tile dark-bg">
+      <div class="wm-b"><span class="hv">WIT</span><span class="lt">NESS</span></div>
+    </div>
+    <div class="wm-tile dark-bg">
+      <div class="wm-c"><span class="ac">WIT</span><span class="nm">NESS</span></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="foot-l">
+      docs/design/brand-book-a4.pdf<br />
+      Witness Fitness Tracker · Brand Book v1.0 · 2026-06-06
+    </div>
+    <div class="foot-r">
+      Space Grotesk · Inter · JetBrains Mono<br />
+      See design-system.html for full component reference
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
