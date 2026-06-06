@@ -22,7 +22,10 @@ export function VolumeChart({ data }: { data: { name: string; reps: number }[] }
           <BarChart data={data} layout="vertical" margin={{ top: 4, right: 8, left: 60, bottom: 0 }}>
             <XAxis type="number" tick={{ fontSize: 10, fill: "#8888AA" }} axisLine={false} tickLine={false} />
             <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: "#8888AA" }} axisLine={false} tickLine={false} width={60} />
-            <Tooltip contentStyle={{ background: "#1A1A24", border: "1px solid #2A2A3A", borderRadius: 8 }} />
+            <Tooltip
+              contentStyle={{ background: "#1A1A24", border: "1px solid #2A2A3A", borderRadius: 8, color: "#F0F0FF" }}
+              cursor={{ fill: "rgba(255,255,255,0.04)" }}
+            />
             <Bar dataKey="reps" fill="#A259FF" radius={[0, 3, 3, 0]} name="Total reps" />
           </BarChart>
         </ResponsiveContainer>

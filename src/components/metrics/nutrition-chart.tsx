@@ -20,7 +20,10 @@ export function NutritionChart({ data, calorieTarget, proteinTarget }: Props) {
           <BarChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
             <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#8888AA" }} axisLine={false} tickLine={false} />
             <YAxis tick={{ fontSize: 10, fill: "#8888AA" }} axisLine={false} tickLine={false} />
-            <Tooltip contentStyle={{ background: "#1A1A24", border: "1px solid #2A2A3A", borderRadius: 8 }} />
+            <Tooltip
+              contentStyle={{ background: "#1A1A24", border: "1px solid #2A2A3A", borderRadius: 8, color: "#F0F0FF" }}
+              cursor={{ fill: "rgba(255,255,255,0.04)" }}
+            />
             <Legend wrapperStyle={{ fontSize: 11 }} />
             <Bar dataKey="calories" fill="#FF5C38" radius={[3, 3, 0, 0]} name="Calories (kcal)" />
             <Bar dataKey="protein"  fill="#00D4FF" radius={[3, 3, 0, 0]} name="Protein (g)" />

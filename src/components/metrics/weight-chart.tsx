@@ -22,7 +22,10 @@ export function WeightChart({ data }: { data: { date: string; weight: number }[]
           <LineChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
             <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#8888AA" }} axisLine={false} tickLine={false} />
             <YAxis tick={{ fontSize: 10, fill: "#8888AA" }} axisLine={false} tickLine={false} domain={["auto", "auto"]} />
-            <Tooltip contentStyle={{ background: "#1A1A24", border: "1px solid #2A2A3A", borderRadius: 8 }} />
+            <Tooltip
+              contentStyle={{ background: "#1A1A24", border: "1px solid #2A2A3A", borderRadius: 8, color: "#F0F0FF" }}
+              cursor={{ stroke: "rgba(255,255,255,0.1)", strokeWidth: 1 }}
+            />
             <Line type="monotone" dataKey="weight" stroke="#FFB020" strokeWidth={2} dot={{ fill: "#FFB020", r: 3 }} name="Weight (kg)" />
           </LineChart>
         </ResponsiveContainer>
