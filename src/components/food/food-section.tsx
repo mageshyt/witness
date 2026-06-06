@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { FoodForm } from "./food-form";
 import { deleteFoodEntry } from "@/actions/food";
 import { toast } from "sonner";
+import { Camera } from "lucide-react";
 import type { FoodEntry } from "@prisma/client";
 
 interface Props {
@@ -61,9 +62,9 @@ export function FoodSection({ dateStr, entries }: Props) {
               {Math.round(e.proteinG)}g pro
             </Badge>
             <button
-              className="text-xs text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground transition-colors"
               onClick={() => toast.info("Photo upload coming soon")}>
-              📷
+              <Camera size={14} />
             </button>
             <button
               className="text-xs text-muted-foreground hover:text-foreground"
