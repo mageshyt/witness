@@ -7,17 +7,17 @@ datasource db {
 }
 
 model User {
-  id             String           @id @default(cuid())
-  email          String           @unique
-  name           String?
-  emailVerified  Boolean          @default(false)
-  image          String?
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  sessions       Session[]
-  accounts       Account[]
-  profile        UserProfile?
-  dailyLogs      DailyLog[]
+  id                String            @id @default(cuid())
+  email             String            @unique
+  name              String?
+  emailVerified     Boolean           @default(false)
+  image             String?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  sessions          Session[]
+  accounts          Account[]
+  profile           UserProfile?
+  dailyLogs         DailyLog[]
   bodyWeightEntries BodyWeightEntry[]
 }
 
@@ -65,16 +65,16 @@ model Verification {
 }
 
 model UserProfile {
-  id             String   @id @default(cuid())
-  userId         String   @unique
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  sex            String?
-  heightCm       Float?
-  baseWeightKg   Float?
-  calorieTarget  Int?
-  proteinTarget  Int?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sex           String?
+  heightCm      Float?
+  baseWeightKg  Float?
+  calorieTarget Int?
+  proteinTarget Int?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@index([userId])
 }
