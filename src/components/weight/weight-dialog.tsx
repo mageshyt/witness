@@ -4,7 +4,13 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { upsertBodyWeight } from "@/actions/weight";
 import { toast } from "sonner";
 
@@ -14,8 +20,8 @@ interface Props {
 }
 
 export function WeightDialog({ dateStr, current }: Props) {
-  const [open, setOpen]       = useState(false);
-  const [weight, setWeight]   = useState(current?.toString() ?? "");
+  const [open, setOpen] = useState(false);
+  const [weight, setWeight] = useState(current?.toString() ?? "");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -40,20 +46,35 @@ export function WeightDialog({ dateStr, current }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         render={
-          <Button size="sm" variant="outline" className="border-[#FFB020]/30 text-[#FFB020]" />
+          <Button
+            size="sm"
+            variant="outline"
+            className="border-[#FFB020]/30 text-[#FFB020]"
+          />
         }
       >
         {current ? `${current} kg` : "+ Log Weight"}
       </DialogTrigger>
-      <DialogContent className="bg-card border-border">
-        <DialogHeader>
-          <DialogTitle>Log body weight</DialogTitle>
+      <DialogContent className="bg-card border-border sm:max-w-md">
+        <DialogHeader className="pb-2">
+          <DialogTitle className="text-lg font-semibold">
+            Log body weight
+          </DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <div className="space-y-1">
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="space-y-2">
             <Label>Weight (kg)</Label>
-            <Input type="text" inputMode="decimal" value={weight} onChange={e => setWeight(e.target.value)} required placeholder="e.g. 82.5" />
+            <Input
+              type="text"
+              inputMode="decimal"
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+              required
+              placeholder="e.g. 82.5"
+            />
           </div>
+
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Saving…" : "Save"}
           </Button>
