@@ -18,8 +18,12 @@ export function FoodSection({ dateStr, entries }: Props) {
   const [editing, setEditing]   = useState<FoodEntry | null>(null);
 
   async function handleDelete(id: string) {
-    await deleteFoodEntry(id);
-    toast.success("Entry deleted");
+    try {
+      await deleteFoodEntry(id);
+      toast.success("Entry deleted");
+    } catch {
+      toast.error("Failed to delete entry");
+    }
   }
 
   function openAdd() {
