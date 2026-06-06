@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout *)",
+      "Bash(npx create-next-app@latest *)",
+      "Bash(cp /c/Users/I769591/Desktop/Projects/fullstack/fitness/.mcp.json /tmp/mcp_backup.json)",
+      "Bash(cp -r /c/Users/I769591/Desktop/Projects/fullstack/fitness/docs /tmp/docs_backup)",
+      "Bash(cp -r /c/Users/I769591/Desktop/Projects/fullstack/fitness/design /tmp/design_backup)",
+      "Bash(mv /c/Users/I769591/Desktop/Projects/fullstack/fitness/design /tmp/design_temp)",
+      "Bash(mv /c/Users/I769591/Desktop/Projects/fullstack/fitness/docs /tmp/docs_temp)",
+      "Bash(cp /tmp/.mcp.json /c/Users/I769591/Desktop/Projects/fullstack/fitness/.mcp.json)",
+      "Bash(cp -r /tmp/design_temp /c/Users/I769591/Desktop/Projects/fullstack/fitness/design)",
+      "Bash(cp -r /tmp/docs_temp /c/Users/I769591/Desktop/Projects/fullstack/fitness/docs)",
+      "Bash(npm install *)",
+      "Bash(npx shadcn@latest *)",
+      "Bash(git *)",
+      "Bash(npm list *)",
+      "Bash(grep -q '\"@/\\\\*\"' \"C:/Users/I769591/Desktop/Projects/fullstack/fitness/tsconfig.json\")",
+      "Bash(npx prisma *)",
+      "Bash(docker run *)",
+      "Bash(npx tsc *)",
+      "Bash(docker exec witness-postgres *)",
+      "Bash(npm run *)",
+      "Bash(npm view *)"
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "shadcn"
+  ]
+}

@@ -7,7 +7,11 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = { title: "Witness", description: "Daily fitness tracker" };
+export const metadata: Metadata = {
+  title: "Witness",
+  description: "Daily fitness tracker",
+  icons: { icon: "/icon.svg", shortcut: "/icon.svg" },
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
