@@ -67,7 +67,7 @@ export function FoodForm({ dateStr, open, onOpenChange, initial }: FoodFormProps
               <div className="relative">
                 <Input
                   id="food-qty"
-                  type="number"
+                  type="text"
                   value={qty}
                   onChange={e => setQty(e.target.value)}
                   required
@@ -83,7 +83,7 @@ export function FoodForm({ dateStr, open, onOpenChange, initial }: FoodFormProps
               <div className="relative">
                 <Input
                   id="food-kcal"
-                  type="number"
+                  type="text"
                   value={kcal}
                   onChange={e => setKcal(e.target.value)}
                   required
@@ -99,7 +99,7 @@ export function FoodForm({ dateStr, open, onOpenChange, initial }: FoodFormProps
               <div className="relative">
                 <Input
                   id="food-protein"
-                  type="number"
+                  type="text"
                   value={protein}
                   onChange={e => setProtein(e.target.value)}
                   required

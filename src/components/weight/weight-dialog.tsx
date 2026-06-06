@@ -52,7 +52,7 @@ export function WeightDialog({ dateStr, current }: Props) {
         <form onSubmit={handleSubmit} className="space-y-3">
           <div className="space-y-1">
             <Label>Weight (kg)</Label>
-            <Input type="number" step="0.1" value={weight} onChange={e => setWeight(e.target.value)} required min={20} max={300} />
+            <Input type="text" inputMode="decimal" value={weight} onChange={e => setWeight(e.target.value)} required placeholder="e.g. 82.5" />
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Saving…" : "Save"}

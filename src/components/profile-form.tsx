@@ -51,19 +51,19 @@ export function ProfileForm({ profile }: { profile: UserProfile | null }) {
         </div>
         <div className="space-y-1">
           <Label>Height (cm)</Label>
-          <Input type="number" value={height} onChange={e => setHeight(e.target.value)} min={100} max={250} />
+          <Input type="text" inputMode="decimal" value={height} onChange={e => setHeight(e.target.value)} placeholder="e.g. 175" />
         </div>
         <div className="space-y-1">
           <Label>Base weight (kg)</Label>
-          <Input type="number" step="0.1" value={weight} onChange={e => setWeight(e.target.value)} min={20} max={300} />
+          <Input type="text" inputMode="decimal" value={weight} onChange={e => setWeight(e.target.value)} placeholder="e.g. 75.5" />
         </div>
         <div className="space-y-1">
           <Label>Daily calorie target</Label>
-          <Input type="number" value={calories} onChange={e => setCalories(e.target.value)} min={0} />
+          <Input type="text" inputMode="numeric" value={calories} onChange={e => setCalories(e.target.value)} placeholder="e.g. 2500" />
         </div>
         <div className="col-span-2 space-y-1">
           <Label>Daily protein target (g)</Label>
-          <Input type="number" value={protein} onChange={e => setProtein(e.target.value)} min={0} />
+          <Input type="text" inputMode="numeric" value={protein} onChange={e => setProtein(e.target.value)} placeholder="e.g. 180" />
         </div>
       </div>
       <Button type="submit" disabled={loading}>
