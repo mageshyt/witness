@@ -2,6 +2,8 @@ import { getOrCreateDailyLog } from "@/actions/daily-log";
 import { StatCard } from "@/components/stat-card";
 import { FoodSection } from "@/components/food/food-section";
 import { WorkoutSection } from "@/components/workout/workout-section";
+import { WeightDialog } from "@/components/weight/weight-dialog";
+import { PhotoToastButton } from "@/components/photo-toast-button";
 import { getSession } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { format, addDays, subDays } from "date-fns";
@@ -74,6 +76,12 @@ export default async function TodayPage({ searchParams }: Props) {
           icon="⚖️" label="Weight" accent="weight"
           value={latestWeight ? `${latestWeight.weightKg}kg` : "—"}
         />
+      </div>
+
+      {/* Weight + photo quick actions */}
+      <div className="flex items-center gap-3">
+        <WeightDialog dateStr={dateStr} current={latestWeight?.weightKg} />
+        <PhotoToastButton />
       </div>
 
       <FoodSection dateStr={dateStr} entries={log.foodEntries} />
