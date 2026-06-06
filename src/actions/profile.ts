@@ -19,4 +19,6 @@ export async function upsertProfile(data: {
     update: data,
   });
   revalidatePath("/profile");
+  revalidatePath("/today");
+  revalidatePath("/metrics");
 }

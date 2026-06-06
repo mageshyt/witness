@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,6 +17,10 @@ export function WeightDialog({ dateStr, current }: Props) {
   const [open, setOpen]       = useState(false);
   const [weight, setWeight]   = useState(current?.toString() ?? "");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (open) setWeight(current?.toString() ?? "");
+  }, [open, current]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
