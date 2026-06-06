@@ -4,11 +4,10 @@ import { FoodSection } from "@/components/food/food-section";
 import { WorkoutSection } from "@/components/workout/workout-section";
 import { WeightDialog } from "@/components/weight/weight-dialog";
 import { PhotoToastButton } from "@/components/photo-toast-button";
+import { DateNav } from "@/components/date-nav";
 import { getSession } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
-import { format, addDays, subDays } from "date-fns";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
 
 interface Props {
   searchParams: Promise<{ date?: string }>;
@@ -34,24 +33,10 @@ export default async function TodayPage({ searchParams }: Props) {
     orderBy: { date: "desc" },
   });
 
-  const prevDate = format(subDays(new Date(dateStr + "T12:00:00"), 1), "yyyy-MM-dd");
-  const nextDate = format(addDays(new Date(dateStr + "T12:00:00"), 1), "yyyy-MM-dd");
-  const isToday  = dateStr === format(new Date(), "yyyy-MM-dd");
-
   return (
     <div className="space-y-6">
-      {/* Date nav */}
-      <div className="flex items-center justify-between">
-        <Link href={`/today?date=${prevDate}`}>
-          <Button variant="ghost" size="sm">← Prev</Button>
-        </Link>
-        <h1 className="text-lg font-bold">
-          {isToday ? "Today" : format(new Date(dateStr + "T12:00:00"), "EEE, MMM d")}
-        </h1>
-        <Link href={`/today?date=${nextDate}`}>
-          <Button variant="ghost" size="sm" disabled={isToday}>Next →</Button>
-        </Link>
-      </div>
+      {/* Date nav with calendar picker */}
+      <DateNav dateStr={dateStr} />
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
