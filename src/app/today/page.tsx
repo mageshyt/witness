@@ -1,6 +1,7 @@
 import { getOrCreateDailyLog } from "@/actions/daily-log";
 import { StatCard } from "@/components/stat-card";
 import { FoodSection } from "@/components/food/food-section";
+import { WorkoutSection } from "@/components/workout/workout-section";
 import { getSession } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { format, addDays, subDays } from "date-fns";
@@ -76,6 +77,7 @@ export default async function TodayPage({ searchParams }: Props) {
       </div>
 
       <FoodSection dateStr={dateStr} entries={log.foodEntries} />
+      <WorkoutSection dateStr={dateStr} sessions={log.workoutSessions} />
     </div>
   );
 }
