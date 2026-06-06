@@ -61,37 +61,121 @@ export function FoodForm({ dateStr, open, onOpenChange, initial }: FoodFormProps
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-card border-border">
-        <DialogHeader>
-          <DialogTitle>{initial ? "Edit food" : "Log food"}</DialogTitle>
-        </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-3">
+      <DialogContent className="bg-card border-border sm:max-w-md">
+        <DialogHeader className="pb-2">
+          <DialogTitle className="text-lg font-semibold">
+            {initial ? "Edit food entry" : "Log food"}
+          </DialogTitle>
           {!initial && (
-            <div className="space-y-1">
-              <Label>Search food</Label>
+            <p className="text-sm text-muted-foreground">
+              Search for a food or fill in the details manually.
+            </p>
+          )}
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Search — only in add mode */}
+          {!initial && (
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Search food</Label>
               <FoodSearch onSelect={handleSearchSelect} />
             </div>
           )}
-          <div className="space-y-1">
-            <Label>Food name</Label>
-            <Input value={name} onChange={e => setName(e.target.value)} required placeholder="e.g. Chicken breast" />
+
+          {/* Divider between search and manual fields */}
+          {!initial && (
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-border" />
+              </div>
+              <div className="relative flex justify-center text-xs">
+                <span className="bg-card px-2 text-muted-foreground">or enter manually</span>
+              </div>
+            </div>
+          )}
+
+          {/* Food name */}
+          <div className="space-y-2">
+            <Label htmlFor="food-name" className="text-sm font-medium">Food name</Label>
+            <Input
+              id="food-name"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              required
+              placeholder="e.g. Chicken breast"
+            />
           </div>
-          <div className="grid grid-cols-3 gap-2">
-            <div className="space-y-1">
-              <Label>Qty (g)</Label>
-              <Input type="number" value={qty} onChange={e => handleQtyChange(e.target.value)} required min={0} />
+
+          {/* Macros row */}
+          <div className="grid grid-cols-3 gap-3">
+            <div className="space-y-2">
+              <Label htmlFor="food-qty" className="text-sm font-medium">Quantity</Label>
+              <div className="relative">
+                <Input
+                  id="food-qty"
+                  type="number"
+                  value={qty}
+                  onChange={e => handleQtyChange(e.target.value)}
+                  required
+                  min={0}
+                  placeholder="200"
+                  className="pr-7"
+                />
+                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">g</span>
+              </div>
             </div>
-            <div className="space-y-1">
-              <Label>Calories</Label>
-              <Input type="number" value={kcal} onChange={e => setKcal(e.target.value)} required min={0} />
+            <div className="space-y-2">
+              <Label htmlFor="food-kcal" className="text-sm font-medium">Calories</Label>
+              <div className="relative">
+                <Input
+                  id="food-kcal"
+                  type="number"
+                  value={kcal}
+                  onChange={e => setKcal(e.target.value)}
+                  required
+                  min={0}
+                  placeholder="330"
+                  className="pr-10"
+                />
+                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">kcal</span>
+              </div>
             </div>
-            <div className="space-y-1">
-              <Label>Protein (g)</Label>
-              <Input type="number" value={protein} onChange={e => setProtein(e.target.value)} required min={0} />
+            <div className="space-y-2">
+              <Label htmlFor="food-protein" className="text-sm font-medium">Protein</Label>
+              <div className="relative">
+                <Input
+                  id="food-protein"
+                  type="number"
+                  value={protein}
+                  onChange={e => setProtein(e.target.value)}
+                  required
+                  min={0}
+                  placeholder="62"
+                  className="pr-6"
+                />
+                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">g</span>
+              </div>
             </div>
           </div>
+
+          {/* Macro preview badges */}
+          {(kcal || protein) && (
+            <div className="flex gap-2">
+              {kcal && (
+                <span className="rounded-full border border-[#FF5C38]/30 bg-[#2A1208] px-3 py-1 text-xs font-medium text-[#FF5C38]">
+                  🔥 {kcal} kcal
+                </span>
+              )}
+              {protein && (
+                <span className="rounded-full border border-[#00D4FF]/30 bg-[#001E26] px-3 py-1 text-xs font-medium text-[#00D4FF]">
+                  💪 {protein}g protein
+                </span>
+              )}
+            </div>
+          )}
+
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Saving…" : "Save"}
+            {loading ? "Saving…" : initial ? "Update entry" : "Log food"}
           </Button>
         </form>
       </DialogContent>
