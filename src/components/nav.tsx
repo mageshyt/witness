@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { CalendarDays, BarChart3, User, LogOut } from "lucide-react";
 
 const links = [
-  { href: "/today",   label: "Today",   icon: CalendarDays },
+  { href: "/today", label: "Today", icon: CalendarDays },
   { href: "/metrics", label: "Metrics", icon: BarChart3 },
   { href: "/profile", label: "Profile", icon: User },
 ];
@@ -17,6 +18,16 @@ const AUTH_PATHS = ["/login", "/register"];
 export function Nav() {
   const pathname = usePathname();
   const router = useRouter();
+
+  const { data } = useQuery({
+    queryKey: ["streak"],
+    queryFn: async () => {
+      const res = await fetch("/api/streak");
+      if (!res.ok) return { streak: 0 };
+      return res.json();
+    },
+  });
+  const streak: number = data?.streak ?? 0;
 
   if (AUTH_PATHS.some(p => pathname.startsWith(p))) return null;
 
@@ -35,7 +46,7 @@ export function Nav() {
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <svg width="16" height="16" viewBox="0 0 26 26" fill="none">
-                <path d="M4 13h4l3-8 4 16 3-8h4" stroke="#0A0A0F" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M4 13h4l3-8 4 16 3-8h4" stroke="#0A0A0F" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
             <span className="text-sm font-bold tracking-widest">WITNESS</span>
@@ -59,13 +70,23 @@ export function Nav() {
             ))}
           </div>
 
-          {/* Sign out */}
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
-            <LogOut size={14} />
-            <span className="hidden sm:inline">Sign out</span>
-          </button>
+          <div className="flex items-center gap-3">
+            {/* Streak */}
+            {streak > 0 && (
+              <div className="flex items-center gap-1 text-sm font-bold">
+                <span>🔥</span>
+                <span>{streak}</span>
+              </div>
+            )}
+
+            {/* Sign out */}
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
+              <LogOut size={14} />
+              <span className="hidden sm:inline">Sign out</span>
+            </button>
+          </div>
         </div>
       </nav>
 
