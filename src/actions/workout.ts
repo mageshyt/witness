@@ -6,6 +6,8 @@ import { getOrCreateDailyLog } from "./daily-log";
 import { getSession } from "@/lib/session";
 
 export async function createWorkoutSession(dateStr: string, label: string) {
+  const session = await getSession();
+  if (!session?.user) throw new Error("Unauthorized");
   const log = await getOrCreateDailyLog(dateStr);
   await prisma.workoutSession.create({ data: { dailyLogId: log.id, label } });
   revalidatePath("/today");

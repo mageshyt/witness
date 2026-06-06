@@ -14,7 +14,7 @@ interface OFFResponse {
 
 export async function GET(req: NextRequest) {
   const q = req.nextUrl.searchParams.get("q");
-  if (!q || q.length < 2) return NextResponse.json([]);
+  if (!q || q.length < 3) return NextResponse.json([]);
 
   try {
     const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(q)}&search_simple=1&action=process&json=1&page_size=5&fields=product_name,nutriments`;
