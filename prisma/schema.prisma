@@ -19,6 +19,7 @@ model User {
   profile           UserProfile?
   dailyLogs         DailyLog[]
   bodyWeightEntries BodyWeightEntry[]
+  workoutPresets    WorkoutPreset[]
 }
 
 model Session {
@@ -156,4 +157,19 @@ model BodyWeightEntry {
 
   @@unique([userId, date])
   @@index([userId])
+}
+
+model WorkoutPreset {
+  id           String   @id @default(cuid())
+  userId       String
+  workoutName  String
+  exerciseName String
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, workoutName, exerciseName])
+  @@index([userId, workoutName])
 }

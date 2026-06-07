@@ -37,33 +37,35 @@ export function ProfileForm({ profile }: { profile: UserProfile | null }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-1">
-          <Label>Sex</Label>
-          <Select value={sex} onValueChange={(val) => setSex(val ?? "")}>
-            <SelectTrigger><SelectValue placeholder="Select…" /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="male">Male</SelectItem>
-              <SelectItem value="female">Female</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="space-y-1">
-          <Label>Height (cm)</Label>
-          <Input type="text" inputMode="decimal" value={height} onChange={e => setHeight(e.target.value)} placeholder="e.g. 175" />
-        </div>
-        <div className="space-y-1">
-          <Label>Base weight (kg)</Label>
-          <Input type="text" inputMode="decimal" value={weight} onChange={e => setWeight(e.target.value)} placeholder="e.g. 75.5" />
-        </div>
-        <div className="space-y-1">
-          <Label>Daily calorie target</Label>
-          <Input type="text" inputMode="numeric" value={calories} onChange={e => setCalories(e.target.value)} placeholder="e.g. 2500" />
-        </div>
-        <div className="col-span-2 space-y-1">
-          <Label>Daily protein target (g)</Label>
-          <Input type="text" inputMode="numeric" value={protein} onChange={e => setProtein(e.target.value)} placeholder="e.g. 180" />
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="rounded-xl border border-border p-5">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-5">
+          <div className="space-y-2">
+            <Label>Sex</Label>
+            <Select value={sex} onValueChange={(val) => setSex(val ?? "")}>
+              <SelectTrigger><SelectValue placeholder="Select…" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="male">Male</SelectItem>
+                <SelectItem value="female">Female</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Height (cm)</Label>
+            <Input type="text" inputMode="decimal" value={height} onChange={e => setHeight(e.target.value)} placeholder="e.g. 175" />
+          </div>
+          <div className="space-y-2">
+            <Label>Base weight (kg)</Label>
+            <Input type="text" inputMode="decimal" value={weight} onChange={e => setWeight(e.target.value)} placeholder="e.g. 75.5" />
+          </div>
+          <div className="space-y-2">
+            <Label>Daily calorie target</Label>
+            <Input type="text" inputMode="numeric" value={calories} onChange={e => setCalories(e.target.value)} placeholder="e.g. 2500" />
+          </div>
+          <div className="col-span-2 space-y-2">
+            <Label>Daily protein target (g)</Label>
+            <Input type="text" inputMode="numeric" value={protein} onChange={e => setProtein(e.target.value)} placeholder="e.g. 180" />
+          </div>
         </div>
       </div>
       <Button type="submit" disabled={loading}>

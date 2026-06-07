@@ -2,6 +2,7 @@ import { getSession } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { calculateBMI, bmiCategory } from "@/lib/bmi";
 import { ProfileForm } from "@/components/profile-form";
+import { LogoutButton } from "@/components/logout-button";
 import { format } from "date-fns";
 
 export default async function ProfilePage() {
@@ -21,7 +22,7 @@ export default async function ProfilePage() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-bold tracking-tight">Profile</h1>
+      <h1 className="text-2xl font-bold tracking-tight">Hi {session.user.name},</h1>
 
       {bmi && (
         <div className="rounded-xl border border-[#FFB020]/30 bg-[#261A04] p-4">
@@ -31,6 +32,8 @@ export default async function ProfilePage() {
       )}
 
       <ProfileForm profile={profile} />
+
+      <LogoutButton />
 
       {weightEntries.length > 0 && (
         <section className="space-y-2">
