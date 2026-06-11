@@ -8,6 +8,7 @@ interface FoodResult {
   name: string;
   kcalPer100g: number;
   proteinPer100g: number;
+  fatsPer100g: number;
 }
 
 interface Props {

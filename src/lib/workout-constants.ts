@@ -5,12 +5,9 @@ export const QUICK_LABELS = [
   "Back",
   "Biceps",
   "Legs",
-  "Push",
-  "Pull",
-  "Arms",
-  "Core",
-  "Full Body",
+  "Abs",
   "Cardio",
+  "Full Body",
 ] as const;
 
 export type QuickLabel = (typeof QUICK_LABELS)[number];

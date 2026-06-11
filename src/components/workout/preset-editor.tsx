@@ -4,7 +4,7 @@ import { useState, useTransition, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getPreset, addToPresetAndSession, removeFromPreset, reorderPreset } from "@/actions/workout";
+import { getPreset, addToPreset, addToPresetAndSession, removeFromPreset, reorderPreset } from "@/actions/workout";
 import { toast } from "sonner";
 import { ChevronUp, ChevronDown, X } from "lucide-react";
 
@@ -12,7 +12,7 @@ type PresetItem = { id: string; exerciseName: string; order: number };
 
 interface Props {
   workoutName: string;
-  sessionId: string;
+  sessionId?: string;
   open: boolean;
   onOpenChange: (v: boolean) => void;
 }
@@ -35,7 +35,11 @@ export function PresetEditor({ workoutName, sessionId, open, onOpenChange }: Pro
     if (!name) return;
     startTransition(async () => {
       try {
-        await addToPresetAndSession(workoutName, name, sessionId);
+        if (sessionId) {
+          await addToPresetAndSession(workoutName, name, sessionId);
+        } else {
+          await addToPreset(workoutName, name);
+        }
         setNewName("");
         const data = await getPreset(workoutName);
         setItems(data);

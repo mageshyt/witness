@@ -5,10 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ExerciseRow } from "./exercise-row";
-import { PresetEditor } from "./preset-editor";
 import { addExercise, deleteWorkoutSession } from "@/actions/workout";
-import { QUICK_LABELS } from "@/lib/workout-constants";
-import { Pencil } from "lucide-react";
 import { toast } from "sonner";
 import type { WorkoutSession, Exercise, ExerciseSet } from "@prisma/client";
 
@@ -17,11 +14,8 @@ type FullSession = WorkoutSession & {
 };
 
 export function SessionCard({ session }: { session: FullSession }) {
-  const [exName, setExName]           = useState("");
-  const [adding, setAdding]           = useState(false);
-  const [editPresetOpen, setEditPresetOpen] = useState(false);
-
-  const isQuickLabel = (QUICK_LABELS as readonly string[]).includes(session.label);
+  const [exName, setExName] = useState("");
+  const [adding, setAdding] = useState(false);
 
   async function handleAddExercise() {
     if (!exName.trim()) return;
@@ -45,8 +39,7 @@ export function SessionCard({ session }: { session: FullSession }) {
   }
 
   return (
-    <>
-      <Card className="border-[#A259FF]/30 bg-card">
+    <Card className="border-[#A259FF]/30 bg-card">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
             <CardTitle className="text-base text-[#A259FF]">{session.label}</CardTitle>
@@ -54,21 +47,13 @@ export function SessionCard({ session }: { session: FullSession }) {
               Delete session
             </button>
           </div>
-          {isQuickLabel && (
-            <button
-              className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground w-fit"
-              onClick={() => setEditPresetOpen(true)}>
-              <Pencil size={11} />
-              Edit Preset
-            </button>
-          )}
           <p className="text-xs text-muted-foreground">{session.exercises.length} exercise(s)</p>
         </CardHeader>
         <CardContent className="space-y-2">
           {session.exercises.map(ex => <ExerciseRow key={ex.id} exercise={ex} />)}
 
           <div className="flex gap-2">
-            <Input className="h-8 text-sm" placeholder="Exercise name (e.g. Bench Press)"
+            <Input className="h-8 text-sm" placeholder="Add Exercise"
               value={exName} onChange={e => setExName(e.target.value)}
               onKeyDown={e => e.key === "Enter" && handleAddExercise()} />
             <Button size="sm" className="h-8" onClick={handleAddExercise} disabled={adding || !exName.trim()}>
@@ -76,16 +61,6 @@ export function SessionCard({ session }: { session: FullSession }) {
             </Button>
           </div>
         </CardContent>
-      </Card>
-
-      {isQuickLabel && (
-        <PresetEditor
-          workoutName={session.label}
-          sessionId={session.id}
-          open={editPresetOpen}
-          onOpenChange={setEditPresetOpen}
-        />
-      )}
-    </>
+    </Card>
   );
 }

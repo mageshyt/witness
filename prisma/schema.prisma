@@ -20,6 +20,7 @@ model User {
   dailyLogs         DailyLog[]
   bodyWeightEntries BodyWeightEntry[]
   workoutPresets    WorkoutPreset[]
+  foodPresets       FoodPreset[]
 }
 
 model Session {
@@ -99,9 +100,9 @@ model FoodEntry {
   dailyLogId String
   dailyLog   DailyLog @relation(fields: [dailyLogId], references: [id], onDelete: Cascade)
   name       String
-  quantityG  Float
   calories   Float
   proteinG   Float
+  fatsG      Float
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
@@ -160,16 +161,42 @@ model BodyWeightEntry {
 }
 
 model WorkoutPreset {
-  id           String   @id @default(cuid())
-  userId       String
-  workoutName  String
+  id        String           @id @default(cuid())
+  userId    String
+  name      String
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exercises PresetExercise[]
+
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+model PresetExercise {
+  id           String        @id @default(cuid())
+  presetId     String
+  preset       WorkoutPreset @relation(fields: [presetId], references: [id], onDelete: Cascade)
   exerciseName String
-  order        Int      @default(0)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  order        Int           @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([presetId, exerciseName])
+  @@index([presetId])
+}
 
-  @@unique([userId, workoutName, exerciseName])
-  @@index([userId, workoutName])
+model FoodPreset {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  calories  Float
+  proteinG  Float
+  fatsG     Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, name])
+  @@index([userId])
 }

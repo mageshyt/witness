@@ -12,9 +12,6 @@ export function middleware(request: NextRequest) {
   if (!session && !isPublic) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
-  if (session && (pathname === "/login" || pathname === "/register")) {
-    return NextResponse.redirect(new URL("/today", request.url));
-  }
   return NextResponse.next();
 }
 

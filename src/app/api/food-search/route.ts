@@ -5,6 +5,7 @@ interface OFFProduct {
   nutriments?: {
     "energy-kcal_100g"?: number;
     proteins_100g?: number;
+    fat_100g?: number;
   };
 }
 
@@ -27,6 +28,7 @@ export async function GET(req: NextRequest) {
         name: p.product_name!,
         kcalPer100g: p.nutriments!["energy-kcal_100g"]!,
         proteinPer100g: p.nutriments!.proteins_100g ?? 0,
+        fatsPer100g: p.nutriments!.fat_100g ?? 0,
       }));
 
     return NextResponse.json(results);

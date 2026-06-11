@@ -3,6 +3,10 @@ import { prisma } from "@/lib/prisma";
 import { calculateBMI, bmiCategory } from "@/lib/bmi";
 import { ProfileForm } from "@/components/profile-form";
 import { LogoutButton } from "@/components/logout-button";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
+import { SlidersHorizontal, Utensils } from "lucide-react";
 import { format } from "date-fns";
 
 export default async function ProfilePage() {
@@ -32,6 +36,18 @@ export default async function ProfilePage() {
       )}
 
       <ProfileForm profile={profile} />
+
+      <div className="rounded-xl border border-border p-4 space-y-3">
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Presets</h2>
+        <div className="flex gap-3">
+          <Link href="/workout-preset" className={cn(buttonVariants({ variant: "outline" }), "flex-1 gap-2")}>
+            <SlidersHorizontal size={16} /> Workout Presets
+          </Link>
+          <Link href="/food-preset" className={cn(buttonVariants({ variant: "outline" }), "flex-1 gap-2")}>
+            <Utensils size={16} /> Food Presets
+          </Link>
+        </div>
+      </div>
 
       <LogoutButton />
 

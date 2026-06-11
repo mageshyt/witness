@@ -68,9 +68,11 @@ export function ProfileForm({ profile }: { profile: UserProfile | null }) {
           </div>
         </div>
       </div>
-      <Button type="submit" disabled={loading}>
-        {loading ? "Saving…" : "Save profile"}
-      </Button>
+      <div className="flex justify-center">
+        <Button type="submit" disabled={loading}>
+          {loading ? "Saving…" : "Save profile"}
+        </Button>
+      </div>
     </form>
   );
 }

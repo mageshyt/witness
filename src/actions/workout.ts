@@ -15,20 +15,18 @@ export async function createWorkoutSession(dateStr: string, label: string) {
 
   const ws = await prisma.workoutSession.create({ data: { dailyLogId: log.id, label } });
 
-  if ((QUICK_LABELS as readonly string[]).includes(label)) {
-    const presets = await prisma.workoutPreset.findMany({
-      where: { userId: session.user.id, workoutName: label },
-      orderBy: { order: "asc" },
+  const preset = await prisma.workoutPreset.findUnique({
+    where: { userId_name: { userId: session.user.id, name: label } },
+    include: { exercises: { orderBy: { order: "asc" } } },
+  });
+  if (preset && preset.exercises.length > 0) {
+    await prisma.exercise.createMany({
+      data: preset.exercises.map(e => ({
+        workoutSessionId: ws.id,
+        name: e.exerciseName,
+        order: e.order,
+      })),
     });
-    if (presets.length > 0) {
-      await prisma.exercise.createMany({
-        data: presets.map(p => ({
-          workoutSessionId: ws.id,
-          name: p.exerciseName,
-          order: p.order,
-        })),
-      });
-    }
   }
 
   revalidatePath("/today");
@@ -46,16 +44,14 @@ export async function addExercise(sessionId: string, name: string, order: number
   if (!session?.user) throw new Error("Unauthorized");
   await prisma.exercise.create({ data: { workoutSessionId: sessionId, name, order } });
 
-  if (workoutName && (QUICK_LABELS as readonly string[]).includes(workoutName)) {
-    const maxOrder = await prisma.workoutPreset.aggregate({
-      where: { userId: session.user.id, workoutName },
-      _max: { order: true },
-    });
-    await prisma.workoutPreset.upsert({
-      where: { userId_workoutName_exerciseName: { userId: session.user.id, workoutName, exerciseName: name } },
-      create: { userId: session.user.id, workoutName, exerciseName: name, order: (maxOrder._max.order ?? -1) + 1 },
-      update: {},
-    });
+  if (workoutName) {
+    const isBuiltIn = (QUICK_LABELS as readonly string[]).includes(workoutName);
+    const hasPreset = isBuiltIn || !!(await prisma.workoutPreset.findUnique({
+      where: { userId_name: { userId: session.user.id, name: workoutName } },
+    }));
+    if (hasPreset) {
+      await upsertPresetExercise(session.user.id, workoutName, name);
+    }
   }
 
   revalidatePath("/today");
@@ -94,8 +90,12 @@ export async function deleteSet(id: string) {
 export async function getPreset(workoutName: string): Promise<{ id: string; exerciseName: string; order: number }[]> {
   const session = await getSession();
   if (!session?.user) return [];
-  return prisma.workoutPreset.findMany({
-    where: { userId: session.user.id, workoutName },
+  const parent = await prisma.workoutPreset.findUnique({
+    where: { userId_name: { userId: session.user.id, name: workoutName } },
+  });
+  if (!parent) return [];
+  return prisma.presetExercise.findMany({
+    where: { presetId: parent.id },
     orderBy: { order: "asc" },
     select: { id: true, exerciseName: true, order: true },
   });
@@ -104,25 +104,43 @@ export async function getPreset(workoutName: string): Promise<{ id: string; exer
 export async function removeFromPreset(workoutName: string, exerciseName: string) {
   const session = await getSession();
   if (!session?.user) throw new Error("Unauthorized");
-  await prisma.workoutPreset.deleteMany({
-    where: { userId: session.user.id, workoutName, exerciseName },
+  const parent = await prisma.workoutPreset.findUnique({
+    where: { userId_name: { userId: session.user.id, name: workoutName } },
   });
+  if (!parent) return;
+  await prisma.presetExercise.deleteMany({ where: { presetId: parent.id, exerciseName } });
   revalidatePath("/today");
+}
+
+async function upsertPresetExercise(userId: string, workoutName: string, exerciseName: string) {
+  const parent = await prisma.workoutPreset.upsert({
+    where: { userId_name: { userId, name: workoutName } },
+    create: { userId, name: workoutName },
+    update: {},
+  });
+  const maxOrder = await prisma.presetExercise.aggregate({
+    where: { presetId: parent.id },
+    _max: { order: true },
+  });
+  await prisma.presetExercise.upsert({
+    where: { presetId_exerciseName: { presetId: parent.id, exerciseName } },
+    create: { presetId: parent.id, exerciseName, order: (maxOrder._max.order ?? -1) + 1 },
+    update: {},
+  });
+}
+
+export async function addToPreset(workoutName: string, exerciseName: string) {
+  const session = await getSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  await upsertPresetExercise(session.user.id, workoutName, exerciseName);
+  revalidatePath("/profile");
 }
 
 export async function addToPresetAndSession(workoutName: string, exerciseName: string, sessionId: string) {
   const session = await getSession();
   if (!session?.user) throw new Error("Unauthorized");
 
-  const maxOrder = await prisma.workoutPreset.aggregate({
-    where: { userId: session.user.id, workoutName },
-    _max: { order: true },
-  });
-  await prisma.workoutPreset.upsert({
-    where: { userId_workoutName_exerciseName: { userId: session.user.id, workoutName, exerciseName } },
-    create: { userId: session.user.id, workoutName, exerciseName, order: (maxOrder._max.order ?? -1) + 1 },
-    update: {},
-  });
+  await upsertPresetExercise(session.user.id, workoutName, exerciseName);
 
   const already = await prisma.exercise.findFirst({
     where: { workoutSessionId: sessionId, name: exerciseName },
@@ -137,12 +155,52 @@ export async function addToPresetAndSession(workoutName: string, exerciseName: s
   revalidatePath("/today");
 }
 
+export async function getUserCustomWorkoutTypes(): Promise<string[]> {
+  const session = await getSession();
+  if (!session?.user) return [];
+  const presets = await prisma.workoutPreset.findMany({
+    where: { userId: session.user.id },
+    select: { name: true },
+    orderBy: { name: "asc" },
+  });
+  const builtIn = new Set(QUICK_LABELS as readonly string[]);
+  return presets.map(p => p.name).filter(n => !builtIn.has(n));
+}
+
+export async function createCustomWorkoutType(name: string) {
+  const session = await getSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  await prisma.workoutPreset.upsert({
+    where: { userId_name: { userId: session.user.id, name } },
+    create: { userId: session.user.id, name },
+    update: {},
+  });
+  revalidatePath("/workout-preset");
+  revalidatePath("/today");
+}
+
+export async function deleteCustomWorkoutType(name: string) {
+  const session = await getSession();
+  if (!session?.user) throw new Error("Unauthorized");
+  if ((QUICK_LABELS as readonly string[]).includes(name)) throw new Error("Cannot delete built-in workout type");
+  await prisma.workoutPreset.delete({
+    where: { userId_name: { userId: session.user.id, name } },
+  });
+  revalidatePath("/workout-preset");
+  revalidatePath("/today");
+}
+
 export async function reorderPreset(workoutName: string, exerciseName: string, direction: "up" | "down") {
   const session = await getSession();
   if (!session?.user) throw new Error("Unauthorized");
 
-  const all = await prisma.workoutPreset.findMany({
-    where: { userId: session.user.id, workoutName },
+  const parent = await prisma.workoutPreset.findUnique({
+    where: { userId_name: { userId: session.user.id, name: workoutName } },
+  });
+  if (!parent) return;
+
+  const all = await prisma.presetExercise.findMany({
+    where: { presetId: parent.id },
     orderBy: { order: "asc" },
   });
 
@@ -156,7 +214,7 @@ export async function reorderPreset(workoutName: string, exerciseName: string, d
   const b = all[swapIdx];
 
   await prisma.$transaction([
-    prisma.workoutPreset.update({ where: { id: a.id }, data: { order: b.order } }),
-    prisma.workoutPreset.update({ where: { id: b.id }, data: { order: a.order } }),
+    prisma.presetExercise.update({ where: { id: a.id }, data: { order: b.order } }),
+    prisma.presetExercise.update({ where: { id: b.id }, data: { order: a.order } }),
   ]);
 }
