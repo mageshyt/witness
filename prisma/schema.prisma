@@ -102,7 +102,7 @@ model FoodEntry {
   name       String
   calories   Float
   proteinG   Float
-  fatsG      Float
+  fatsG      Float @default(0)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
