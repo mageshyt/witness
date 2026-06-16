@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
-import { CalendarDays, BarChart3, User, LogOut } from "lucide-react";
+import { CalendarDays, BarChart3, User } from "lucide-react";
 
 const links = [
   { href: "/today", label: "Today", icon: CalendarDays },
@@ -17,8 +16,6 @@ const AUTH_PATHS = ["/login", "/register"];
 
 export function Nav() {
   const pathname = usePathname();
-  const router = useRouter();
-
   const { data } = useQuery({
     queryKey: ["streak"],
     queryFn: async () => {
@@ -30,12 +27,6 @@ export function Nav() {
   const streak: number = data?.streak ?? 0;
 
   if (AUTH_PATHS.some(p => pathname.startsWith(p))) return null;
-
-  async function handleLogout() {
-    await authClient.signOut();
-    router.push("/login");
-    router.refresh();
-  }
 
   return (
     <>
@@ -78,14 +69,6 @@ export function Nav() {
                 <span>{streak}</span>
               </div>
             )}
-
-            {/* Sign out */}
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
-              <LogOut size={14} />
-              <span className="hidden sm:inline">Sign out</span>
-            </button>
           </div>
         </div>
       </nav>

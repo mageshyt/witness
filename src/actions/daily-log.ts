@@ -3,10 +3,11 @@
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/session";
 import { startOfDay } from "date-fns";
+import { redirect } from "next/navigation";
 
 export async function getOrCreateDailyLog(dateStr: string) {
   const session = await getSession();
-  if (!session?.user) throw new Error("Unauthorized");
+  if (!session?.user) redirect("/login");
 
   const date = startOfDay(new Date(dateStr));
 

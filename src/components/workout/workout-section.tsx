@@ -10,7 +10,13 @@ type FullSession = WorkoutSession & {
   exercises: (Exercise & { sets: ExerciseSet[] })[];
 };
 
-export function WorkoutSection({ dateStr, sessions }: { dateStr: string; sessions: FullSession[] }) {
+interface Props {
+  dateStr: string;
+  sessions: FullSession[];
+  customWorkoutTypes: string[];
+}
+
+export function WorkoutSection({ dateStr, sessions, customWorkoutTypes }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -28,7 +34,7 @@ export function WorkoutSection({ dateStr, sessions }: { dateStr: string; session
         {sessions.map(s => <SessionCard key={s.id} session={s} />)}
       </div>
 
-      <WorkoutForm dateStr={dateStr} open={open} onOpenChange={setOpen} />
+      <WorkoutForm dateStr={dateStr} open={open} onOpenChange={setOpen} customWorkoutTypes={customWorkoutTypes} />
     </section>
   );
 }

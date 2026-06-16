@@ -8,26 +8,16 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { createWorkoutSession } from "@/actions/workout";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-
-const QUICK_LABELS = [
-  "Chest & Shoulders",
-  "Back & Biceps",
-  "Legs",
-  "Push",
-  "Pull",
-  "Arms",
-  "Core",
-  "Full Body",
-  "Cardio",
-];
+import { QUICK_LABELS } from "@/lib/workout-constants";
 
 interface Props {
   dateStr: string;
   open: boolean;
   onOpenChange: (v: boolean) => void;
+  customWorkoutTypes: string[];
 }
 
-export function WorkoutForm({ dateStr, open, onOpenChange }: Props) {
+export function WorkoutForm({ dateStr, open, onOpenChange, customWorkoutTypes }: Props) {
   const [label, setLabel]     = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -40,8 +30,8 @@ export function WorkoutForm({ dateStr, open, onOpenChange }: Props) {
       toast.success("Workout session created");
       setLabel("");
       onOpenChange(false);
-    } catch {
-      toast.error("Something went wrong");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -67,7 +57,7 @@ export function WorkoutForm({ dateStr, open, onOpenChange }: Props) {
           <div className="space-y-2">
             <Label className="text-sm font-medium">Quick select</Label>
             <div className="flex flex-wrap gap-2">
-              {QUICK_LABELS.map(q => (
+              {[...QUICK_LABELS, ...customWorkoutTypes].map(q => (
                 <button
                   key={q}
                   type="button"
@@ -102,7 +92,7 @@ export function WorkoutForm({ dateStr, open, onOpenChange }: Props) {
               value={label}
               onChange={e => setLabel(e.target.value)}
               required
-              placeholder="e.g. Chest & Shoulders"
+              placeholder="Add Workout"
               className="h-11"
             />
           </div>

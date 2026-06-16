@@ -14,9 +14,12 @@ import {
 } from "lucide-react";
 import type { FoodEntry } from "@prisma/client";
 
+type FoodPreset = { id: string; name: string; calories: number; proteinG: number; fatsG: number };
+
 interface Props {
   dateStr: string;
   entries: FoodEntry[];
+  foodPresets: FoodPreset[];
 }
 
 function getFoodIcon(name: string): LucideIcon {
@@ -42,7 +45,7 @@ function getFoodIcon(name: string): LucideIcon {
   return Utensils;
 }
 
-export function FoodSection({ dateStr, entries }: Props) {
+export function FoodSection({ dateStr, entries, foodPresets }: Props) {
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing]   = useState<FoodEntry | null>(null);
 
@@ -92,35 +95,53 @@ export function FoodSection({ dateStr, entries }: Props) {
                 <Icon size={16} className="text-[#FF5C38]" />
               </div>
 
-              {/* Name + quantity */}
+              {/* Name + fats */}
               <div className="min-w-0 flex-1">
                 <div className="truncate text-sm font-medium text-foreground">{e.name}</div>
-                <div className="text-xs text-muted-foreground">{e.quantityG}g</div>
+                <div className="text-xs text-muted-foreground">{Math.round(e.fatsG)}g fat</div>
               </div>
 
-              {/* Macro pills — mono font */}
-              <div className="flex items-center gap-2">
-                <span
-                  className="rounded-full px-2 py-0.5 text-[11px] font-medium"
-                  style={{
-                    fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
-                    background: "#2A1208",
-                    color: "#FF5C38",
-                  }}
-                >
-                  {Math.round(e.calories)} kcal
-                </span>
-                <span
-                  className="rounded-full px-2 py-0.5 text-[11px] font-medium"
-                  style={{
-                    fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
-                    background: "#001E26",
-                    color: "#00D4FF",
-                  }}
-                >
-                  {Math.round(e.proteinG)}g pro
-                </span>
-              </div>
+              {/* Macro pills — mono font, hide when value is 0 */}
+              {(e.calories > 0 || e.proteinG > 0 || e.fatsG > 0) && (
+                <div className="flex items-center gap-2">
+                  {e.calories > 0 && (
+                    <span
+                      className="rounded-full px-2 py-0.5 text-[11px] font-medium"
+                      style={{
+                        fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
+                        background: "#2A1208",
+                        color: "#FF5C38",
+                      }}
+                    >
+                      {Math.round(e.calories)} kcal
+                    </span>
+                  )}
+                  {e.proteinG > 0 && (
+                    <span
+                      className="rounded-full px-2 py-0.5 text-[11px] font-medium"
+                      style={{
+                        fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
+                        background: "#001E26",
+                        color: "#00D4FF",
+                      }}
+                    >
+                      {Math.round(e.proteinG)}g pro
+                    </span>
+                  )}
+                  {e.fatsG > 0 && (
+                    <span
+                      className="rounded-full px-2 py-0.5 text-[11px] font-medium"
+                      style={{
+                        fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
+                        background: "#261A00",
+                        color: "#FFB020",
+                      }}
+                    >
+                      {Math.round(e.fatsG)}g fat
+                    </span>
+                  )}
+                </div>
+              )}
 
               {/* Actions */}
               <div className="flex items-center gap-2">
@@ -155,7 +176,8 @@ export function FoodSection({ dateStr, entries }: Props) {
           setFormOpen(open);
           if (!open) setEditing(null);
         }}
-        initial={editing ? { id: editing.id, name: editing.name, quantityG: editing.quantityG, calories: editing.calories, proteinG: editing.proteinG } : undefined}
+        initial={editing ? { id: editing.id, name: editing.name, calories: editing.calories, proteinG: editing.proteinG, fatsG: editing.fatsG } : undefined}
+        foodPresets={foodPresets}
       />
     </section>
   );

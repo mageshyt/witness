@@ -21,7 +21,7 @@ export function SessionCard({ session }: { session: FullSession }) {
     if (!exName.trim()) return;
     setAdding(true);
     try {
-      await addExercise(session.id, exName.trim(), session.exercises.length);
+      await addExercise(session.id, exName.trim(), session.exercises.length, session.label);
       setExName("");
     } catch {
       toast.error("Failed to add exercise");
@@ -40,27 +40,27 @@ export function SessionCard({ session }: { session: FullSession }) {
 
   return (
     <Card className="border-[#A259FF]/30 bg-card">
-      <CardHeader className="pb-2">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-base text-[#A259FF]">{session.label}</CardTitle>
-          <button className="text-xs text-muted-foreground hover:text-destructive" onClick={handleDeleteSession}>
-            Delete session
-          </button>
-        </div>
-        <p className="text-xs text-muted-foreground">{session.exercises.length} exercise(s)</p>
-      </CardHeader>
-      <CardContent className="space-y-2">
-        {session.exercises.map(ex => <ExerciseRow key={ex.id} exercise={ex} />)}
+        <CardHeader className="pb-2">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-base text-[#A259FF]">{session.label}</CardTitle>
+            <button className="text-xs text-muted-foreground hover:text-destructive" onClick={handleDeleteSession}>
+              Delete session
+            </button>
+          </div>
+          <p className="text-xs text-muted-foreground">{session.exercises.length} exercise(s)</p>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          {session.exercises.map(ex => <ExerciseRow key={ex.id} exercise={ex} />)}
 
-        <div className="flex gap-2">
-          <Input className="h-8 text-sm" placeholder="Exercise name (e.g. Bench Press)"
-            value={exName} onChange={e => setExName(e.target.value)}
-            onKeyDown={e => e.key === "Enter" && handleAddExercise()} />
-          <Button size="sm" className="h-8" onClick={handleAddExercise} disabled={adding || !exName.trim()}>
-            + Add
-          </Button>
-        </div>
-      </CardContent>
+          <div className="flex gap-2">
+            <Input className="h-8 text-sm" placeholder="Add Exercise"
+              value={exName} onChange={e => setExName(e.target.value)}
+              onKeyDown={e => e.key === "Enter" && handleAddExercise()} />
+            <Button size="sm" className="h-8" onClick={handleAddExercise} disabled={adding || !exName.trim()}>
+              + Add
+            </Button>
+          </div>
+        </CardContent>
     </Card>
   );
 }

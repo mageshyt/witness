@@ -1,4 +1,6 @@
 import { getOrCreateDailyLog } from "@/actions/daily-log";
+import { getUserCustomWorkoutTypes } from "@/actions/workout";
+import { getFoodPresets } from "@/actions/food";
 import { StatCard } from "@/components/stat-card";
 import { FoodSection } from "@/components/food/food-section";
 import { WorkoutSection } from "@/components/workout/workout-section";
@@ -8,6 +10,7 @@ import { DateNav } from "@/components/date-nav";
 import { getSession } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { format } from "date-fns";
+import { redirect } from "next/navigation";
 
 interface Props {
   searchParams: Promise<{ date?: string }>;
@@ -16,11 +19,18 @@ interface Props {
 export default async function TodayPage({ searchParams }: Props) {
   const { date: dateParam } = await searchParams;
   const dateStr = dateParam ?? format(new Date(), "yyyy-MM-dd");
-  const log = await getOrCreateDailyLog(dateStr);
 
   const session = await getSession();
+  if (!session?.user) redirect("/login");
+
+  const [log, customWorkoutTypes, foodPresets] = await Promise.all([
+    getOrCreateDailyLog(dateStr),
+    getUserCustomWorkoutTypes(),
+    getFoodPresets(),
+  ]);
+
   const profile = await prisma.userProfile.findUnique({
-    where: { userId: session!.user.id },
+    where: { userId: session.user.id },
   });
 
   const totalCalories = log.foodEntries.reduce((s, e) => s + e.calories, 0);
@@ -29,7 +39,7 @@ export default async function TodayPage({ searchParams }: Props) {
   const totalSets     = log.workoutSessions.flatMap(s => s.exercises.flatMap(e => e.sets)).length;
 
   const latestWeight = await prisma.bodyWeightEntry.findFirst({
-    where: { userId: session!.user.id },
+    where: { userId: session.user.id },
     orderBy: { date: "desc" },
   });
 
@@ -69,8 +79,8 @@ export default async function TodayPage({ searchParams }: Props) {
         <PhotoToastButton />
       </div>
 
-      <FoodSection dateStr={dateStr} entries={log.foodEntries} />
-      <WorkoutSection dateStr={dateStr} sessions={log.workoutSessions} />
+      <FoodSection dateStr={dateStr} entries={log.foodEntries} foodPresets={foodPresets} />
+      <WorkoutSection dateStr={dateStr} sessions={log.workoutSessions} customWorkoutTypes={customWorkoutTypes} />
     </div>
   );
 }
